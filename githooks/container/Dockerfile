@@ -4,7 +4,7 @@ LABEL name=githooks-docs
 
 RUN apk add git tar curl xz bash coreutils findutils grep sed parallel && \
     apk add npm && \
-    npm install -g prettier @mixer/parallel-prettier
+    npm install -g prettier@3.0.0 @mixer/parallel-prettier@2.0.3
 
 RUN git config --system --add safe.directory "*" 
 
