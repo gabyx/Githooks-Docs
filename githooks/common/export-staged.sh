@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # shellcheck disable=SC1090,SC1091
-
 
 # Assert all staged files are set in env. variable `STAGED_FILES`.
 function assertStagedFiles() {
