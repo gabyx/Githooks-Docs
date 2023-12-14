@@ -60,7 +60,7 @@ parseArgs "$@"
 addArgs=()
 
 if [ "$dryRun" = "false" ]; then
-    assertConfigsFormatVersion "3.0.0" "4.0.0"
+    assertDocsFormatVersion "3.0.0" "4.0.0"
     addArgs+=(--write)
     printInfo "Formatting in '$dir with '$fileGlob'."
 else
