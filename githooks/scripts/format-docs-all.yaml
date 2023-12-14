@@ -1,0 +1,3 @@
+cmd: githooks/scripts/format-docs-all.sh
+image:
+  reference: githooks-configs:1.1.0

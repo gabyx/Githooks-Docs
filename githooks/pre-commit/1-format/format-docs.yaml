@@ -1,3 +1,3 @@
 cmd: githooks/pre-commit/1-format/.format-docs.sh
 image:
-  reference: githooks-docs:1.0.0
+  reference: githooks-docs:1.1.0
