@@ -7,5 +7,5 @@ function getGeneralDocsFileRegex() {
 }
 
 function getGeneralDocsFileGlob() {
-    echo '**/*.{md}'
+    echo '**/*.md'
 }
