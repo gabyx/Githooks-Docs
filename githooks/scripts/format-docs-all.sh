@@ -64,7 +64,7 @@ else
     printInfo "Dry-run formatting in '$dir' with '$regex'."
 fi
 
-parallelForDir formatConfigsFile \
+parallelForDir formatDocsFile \
     "$dir" \
     "$regex" \
     "$excludeRegex" \
