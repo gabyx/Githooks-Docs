@@ -11,15 +11,15 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 dryRun="true"
 dir=""
-excludeIgnorePath=""
-fileGlob=$(getGeneralDocsFileGlob)
+excludeRegex=""
+regex=$(getGeneralDocsFileRegex)
 
 function help() {
     printError "Usage:" \
-        "  [--force]                      : Force the format." \
-        "  [--exclude-ignore-path <path>] : Exclude file ignore path." \
-        "  [--include <pattern>]          : Glob pattern format files." \
-        "   --dir <path>                  : In which directory to format files."
+        "  [--force]                : Force the format." \
+        "  [--exclude <regex> ]     : Exclude file with this regex." \
+        "  [--include <pattern>]   : Regex pattern to include files." \
+        "   --dir <path>            : In which directory to check files."
 }
 
 function parseArgs() {
@@ -35,14 +35,14 @@ function parseArgs() {
             true
         elif [ "$prev" = "--dir" ]; then
             dir="$p"
-        elif [ "$p" = "--exclude-ignore-path" ]; then
+        elif [ "$p" = "--exclude" ]; then
             true
-        elif [ "$prev" = "--exclude-ignore-path" ]; then
-            excludeIgnorePath="$p"
+        elif [ "$prev" = "--exclude" ]; then
+            excludeRegex="$p"
         elif [ "$p" = "--include" ]; then
             true
         elif [ "$prev" = "--include" ]; then
-            fileGlob="$p"
+            regex="$p"
         else
             printError "! Unknown argument \`$p\`"
             help
@@ -57,30 +57,17 @@ parseArgs "$@"
 
 [ -d "$dir" ] || die "Directory '$dir' does not exist."
 
-addArgs=()
-
 if [ "$dryRun" = "false" ]; then
-    assertDocsFormatVersion "3.0.0" "4.0.0"
-    addArgs+=(--write)
-    printInfo "Formatting in '$dir with '$fileGlob'."
+    assertConfigsFormatVersion "3.0.0" "4.0.0"
+    printInfo "Formatting in '$dir with '$regex'."
 else
-    printInfo "Dry-run formatting in '$dir' with '$fileGlob'."
-    addArgs+=(--list-different)
+    printInfo "Dry-run formatting in '$dir' with '$regex'."
 fi
 
-if [ -n "$excludeIgnorePath" ]; then
-    [ -f "$excludeIgnorePath" ] || die "Ignore file '$excludeIgnorePath' for prettier does not exist."
-
-    addArgs+=(--ignore-path "$excludeIgnorePath")
-fi
-
-prettierExe="pprettier"
-if ! command -v "$prettierExe" &>/dev/null; then
-    prettierExe="prettier"
-fi
-
-# Format with no config -> search directory tree upwards.
-(cd "$dir" && "$prettierExe" "${addArgs[@]}" "$fileGlob") ||
-    die "Formatting in '$dir' with '$fileGlob' failed."
+parallelForDir formatConfigsFile \
+    "$dir" \
+    "$regex" \
+    "$excludeRegex" \
+    "$dryRun" || die "Configs format failed."
 
 exit 0
