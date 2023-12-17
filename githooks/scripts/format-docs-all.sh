@@ -58,7 +58,7 @@ parseArgs "$@"
 [ -d "$dir" ] || die "Directory '$dir' does not exist."
 
 if [ "$dryRun" = "false" ]; then
-    assertConfigsFormatVersion "3.0.0" "4.0.0"
+    assertDocsFormatVersion "3.0.0" "4.0.0"
     printInfo "Formatting in '$dir with '$regex'."
 else
     printInfo "Dry-run formatting in '$dir' with '$regex'."
