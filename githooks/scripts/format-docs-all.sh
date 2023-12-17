@@ -18,7 +18,7 @@ function help() {
     printError "Usage:" \
         "  [--force]                      : Force the format." \
         "  [--exclude-ignore-path <path>] : Exclude file ignore path." \
-        "  [--glob-pattern <pattern>]     : Glob pattern format files." \
+        "  [--include <pattern>]          : Glob pattern format files." \
         "   --dir <path>                  : In which directory to format files."
 }
 
@@ -39,9 +39,9 @@ function parseArgs() {
             true
         elif [ "$prev" = "--exclude-ignore-path" ]; then
             excludeIgnorePath="$p"
-        elif [ "$p" = "--glob-pattern" ]; then
+        elif [ "$p" = "--include" ]; then
             true
-        elif [ "$prev" = "--glob-pattern" ]; then
+        elif [ "$prev" = "--include" ]; then
             fileGlob="$p"
         else
             printError "! Unknown argument \`$p\`"
